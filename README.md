@@ -10,5 +10,6 @@
 - [Maze generator](mazegen) - Makes use of a random walker and stack calls to generate a maze
 - [Perlin field](perlinField) - Visual design using particle fields and Perlin noise
 - [Plinko](plinko) - A simple adaptation of the game 'Plinko' using the [matter.js](http://brm.io/matter-js/) physics engine
-- [Travelling salesman](salesman) - Brute force algorithm for finding the shortest path between *n* points.
+- [Travelling salesman](salesman) - Brute force algorithm for finding the shortest path between *n* points
+- [Simple Perceptron](perceptron) - A single-layed, two-dimentional perceptron for classification
 - [Snake game](snake) - Clone of classic snake game
