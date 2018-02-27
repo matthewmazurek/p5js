@@ -1,5 +1,6 @@
 # experiments
 
+- [2048](2048) - A basic clone of the original game
 - [A* path-finding](astar) - Path-finding experiment implementing the A* algorithm
 - [Attractors](attractor) - Visualizing particles with attraction and repulsion
 - [Binary tree](bintree) - A simple implementation of a binary tree search algorithm
