@@ -15,7 +15,6 @@ class Grid {
       // new Cell with incides (i, j)
       return new Cell (i, j, this);
     }));
-    // console.log(xdim, ydim, this.el);
 
   }
 
@@ -56,7 +55,7 @@ class Grid {
     if (transpose) this.transpose();
 
     // Update the tile indices to reflect the array transformations
-    this.reindex();
+    else this.reindex();
 
   }
 
@@ -67,9 +66,12 @@ class Grid {
     let transpose = (dir == 'up' || dir == 'down');
     if (transpose) this.transpose();
 
+    // Reset merged state for all tiles
+    this.el_list.forEach(cell => cell.hasMerged = false);
+
     this.el.forEach((row, j) => row.forEach((cell, i) => {
 
-      // For valued tiles, select orthogonal neighbours in the direction of play
+      // For valued tiles, select orthogonal neighbour in the direction of play
       if (cell.w != 0) {
 
         let n = cell.neighbours.filter(n =>
@@ -79,9 +81,10 @@ class Grid {
         ).filter(n => n.w != 0)[0];
 
         // If tile and neighbour have common values, combine and update score
-        // Bug Note: Need to fix cases where multiple incremental tiles are combined simultaneously
-        if (n && n.w == cell.w) {
+        // hasMerged check fixes combine bug (eg. [0, 2, 2, 4] -> [0, 0, 0, 8])
+        if (n && n.w == cell.w && !n.hasMerged) {
           cell.w += n.w;
+          cell.hasMerged = true;
           n.w = 0;
           n.moveToTarget();
           setScore(score + cell.w);

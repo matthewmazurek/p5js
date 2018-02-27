@@ -6,7 +6,7 @@
 
 let grid, score = 0, bestscore = 0;
 
-const GSIZE = 120,
+const GSIZE = 480/4, // div width is 500px with 10px padding = 480px
       X_DIM = 4,
       Y_DIM = 4,
       INIT_TILES = [2, 2],
@@ -26,11 +26,6 @@ function setup() {
   init();
 
 }
-
-// Prevent default scrolling behaviour of arrow keys
-window.addEventListener("keydown", e => {
-  if([37, 38, 39, 40].indexOf(e.keyCode) > -1) e.preventDefault()
-}, false);
 
 function draw() {
 
@@ -116,3 +111,8 @@ function displayMessage(msg) {
     notice.style.display = 'none';
   }
 }
+
+// Prevent default scrolling behaviour of arrow keys
+window.addEventListener("keydown", e => {
+  if([37, 38, 39, 40].indexOf(e.keyCode) > -1) e.preventDefault()
+}, false);

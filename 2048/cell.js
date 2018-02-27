@@ -3,6 +3,7 @@
 //   * Cell.j  - The y-coordinate of the tile
 //   * Cell.grid - References the parent Grid object
 //   * Cell.w - The value of the tile (default is 0)
+//   * Cell.hasMerged - Boolean to prevent multiple combines during one turn of play
 class Cell {
 
   constructor(i, j, grid, w) {
@@ -10,6 +11,7 @@ class Cell {
     this.j = j;
     this.w = w || 0;
     this.grid = grid;
+    this.hasMerged = false;
     this.moveToTarget();
   }
 
@@ -46,7 +48,7 @@ class Cell {
     this.y = this.j * GSIZE;
     this.background = color(TILE_STYLES.init_color);
   }
-  
+
   // Each Cell is responsible for drawing itself (tile and grid border)
   // The borders are fixed, while the tiles translate with tweening
   // Theses methods are called by the tile's parent Grid
