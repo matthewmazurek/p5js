@@ -1,7 +1,12 @@
-let grid, score;
+// 2048
+// Original game by https://gabrielecirulli.github.io/2048/
+// Inspired by Daniel Shiffman @shiffman
+// Tutorial video https://www.youtube.com/watch?v=JSn-DJU8qf0
+// Dependencies: grid.js, cell.js, styles.js
 
-const GSIZE = 100,
-      FONT_SIZES = [64, 64, 48, 32],
+let grid, score = 0, bestscore = 0;
+
+const GSIZE = 120,
       X_DIM = 4,
       Y_DIM = 4,
       INIT_TILES = [2, 2],
@@ -9,9 +14,41 @@ const GSIZE = 100,
 
 function setup() {
 
-  createCanvas(X_DIM * GSIZE * 1.05, Y_DIM * GSIZE * 1.05);
+  let cnv = createCanvas(X_DIM * GSIZE, Y_DIM * GSIZE);
+  cnv.parent('p5js-canvas');
 
-  score = 0;
+  let newGame_btn = document.getElementById('restart-btn');
+  newGame_btn.addEventListener("click", function() {
+    init();
+  });
+
+  init();
+
+}
+
+// Prevent default scrolling behaviour of arrow keys
+window.addEventListener("keydown", function(e) {
+    if([37, 38, 39, 40].indexOf(e.keyCode) > -1) {
+        e.preventDefault();
+    }
+}, false);
+
+function draw() {
+
+  // Draw the grid and its tiles
+  background(GRID_STYLES.background);
+  grid.draw();
+
+}
+
+function init() {
+
+  // Reset score
+  getBestScore();
+  setScore(0);
+
+  // Clear game message
+  displayMessage(undefined);
 
   // Start a new X_DIM x Y_DIM game with INIT_TILES
   grid = new Grid(X_DIM, Y_DIM);
@@ -19,14 +56,27 @@ function setup() {
 
 }
 
-function draw() {
+function setScore(val) {
 
-  // Draw the grid and child cells
-  background(GRID_STYLES.background);
-  grid.draw();
+  let score_el = document.getElementById('score');
+  let bestscore_el = document.getElementById('bestscore');
 
-  // Update score
-  document.getElementById('score').textContent = score;
+  score = val;
+
+  if (score && score > bestscore) {
+    bestscore = score;
+    if (typeof(Storage) !== "undefined") localStorage.setItem("bestscore", bestscore);
+  }
+
+  score_el.textContent = score;
+  bestscore_el.textContent = bestscore;
+
+}
+
+function getBestScore() {
+  bestscore = (typeof(Storage) !== "undefined") ?
+    localStorage.getItem("bestscore") || 0 : 0;
+  bestscore = Math.max(score, bestscore);
 }
 
 function keyPressed() {
@@ -43,11 +93,26 @@ function keyPressed() {
     grid.add();
   }
 
+  // Update score
+  document.getElementById('score').textContent = score;
+
   // Check if game is over
   if (grid.gameOver) {
-    console.log("Game Over!");
+    displayMessage("Game Over!");
   }
   else if (grid.win) {
-    console.log("You've won!");
+    displayMessage("You've won!");
+  }
+}
+
+function displayMessage(msg) {
+  let notice = document.getElementById('notice');
+  if (msg) {
+    notice.children.item('p').innerHTML = `<strong>${msg}</strong>`;
+    notice.style.display = 'block';
+  }
+  else {
+    // hide game displayMessage
+    notice.style.display = 'none';
   }
 }

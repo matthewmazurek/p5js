@@ -82,7 +82,7 @@ class Grid {
         if (n && n.w == cell.w) {
           cell.w += n.w;
           n.w = 0;
-          score += cell.w;
+          setScore(score + cell.w);
         }
 
       }
@@ -128,7 +128,12 @@ class Grid {
 
   // Grid is drawn by calling the draw method of each cell
   draw() {
-    this.el_list.forEach(cell => cell.drawTile());
+
+    // Draw the blank tiles first (this avoid glitches during animation)
+    this.el_list.filter(cell => cell.w == 0).forEach(cell => cell.drawTile());
+    this.el_list.filter(cell => cell.w != 0).forEach(cell => cell.drawTile());
+
+    // Borders are drawn last to keep things looking clean
     this.el_list.forEach(cell => cell.drawBorder());
   }
 
