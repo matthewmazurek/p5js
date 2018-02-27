@@ -53,7 +53,7 @@ const TILE_STYLES = {
     color: '#f9f6f2',
     background: '#455C7B'
   },
-  '2036': {
+  '2048': {
     size: 24,
     color: '#f9f6f2',
     background: '#2D87A8'
