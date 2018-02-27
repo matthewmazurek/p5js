@@ -14,23 +14,22 @@ const GSIZE = 120,
 
 function setup() {
 
+  // create the p5js canvas and embed it in the parent DOM element
   let cnv = createCanvas(X_DIM * GSIZE, Y_DIM * GSIZE);
   cnv.parent('p5js-canvas');
 
+  // add onclick functionality for new game button
   let newGame_btn = document.getElementById('restart-btn');
-  newGame_btn.addEventListener("click", function() {
-    init();
-  });
+  newGame_btn.addEventListener("click", init);
 
+  // start a new game
   init();
 
 }
 
 // Prevent default scrolling behaviour of arrow keys
-window.addEventListener("keydown", function(e) {
-    if([37, 38, 39, 40].indexOf(e.keyCode) > -1) {
-        e.preventDefault();
-    }
+window.addEventListener("keydown", e => {
+  if([37, 38, 39, 40].indexOf(e.keyCode) > -1) e.preventDefault()
 }, false);
 
 function draw() {
@@ -63,6 +62,7 @@ function setScore(val) {
 
   score = val;
 
+  // Update best score
   if (score && score > bestscore) {
     bestscore = score;
     if (typeof(Storage) !== "undefined") localStorage.setItem("bestscore", bestscore);
@@ -73,11 +73,13 @@ function setScore(val) {
 
 }
 
+// Attempts to retrieve bestscore from the local storage variable
 function getBestScore() {
   bestscore = (typeof(Storage) !== "undefined") ?
     localStorage.getItem("bestscore") || 0 : 0;
   bestscore = Math.max(score, bestscore);
 }
+
 
 function keyPressed() {
 
@@ -93,9 +95,6 @@ function keyPressed() {
     grid.add();
   }
 
-  // Update score
-  document.getElementById('score').textContent = score;
-
   // Check if game is over
   if (grid.gameOver) {
     displayMessage("Game Over!");
@@ -105,6 +104,7 @@ function keyPressed() {
   }
 }
 
+// Display game message on banner above the grid
 function displayMessage(msg) {
   let notice = document.getElementById('notice');
   if (msg) {

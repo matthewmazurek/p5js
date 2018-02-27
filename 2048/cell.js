@@ -10,9 +10,7 @@ class Cell {
     this.j = j;
     this.w = w || 0;
     this.grid = grid;
-    this.x = this.i * GSIZE;
-    this.y = this.j * GSIZE;
-    this.background = color(TILE_STYLES.init_color);
+    this.moveToTarget();
   }
 
   // Returns orthogonal neighbouring tiles
@@ -42,6 +40,13 @@ class Cell {
     }
   }
 
+  // Immediately moves the tile to position and updates color, skipping any animation
+  moveToTarget() {
+    this.x = this.i * GSIZE;
+    this.y = this.j * GSIZE;
+    this.background = color(TILE_STYLES.init_color);
+  }
+  
   // Each Cell is responsible for drawing itself (tile and grid border)
   // The borders are fixed, while the tiles translate with tweening
   // Theses methods are called by the tile's parent Grid

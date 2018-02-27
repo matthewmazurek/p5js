@@ -79,9 +79,11 @@ class Grid {
         ).filter(n => n.w != 0)[0];
 
         // If tile and neighbour have common values, combine and update score
+        // Bug Note: Need to fix cases where multiple incremental tiles are combined simultaneously
         if (n && n.w == cell.w) {
           cell.w += n.w;
           n.w = 0;
+          n.moveToTarget();
           setScore(score + cell.w);
         }
 

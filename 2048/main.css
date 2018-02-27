@@ -51,27 +51,29 @@ h1.title {
   text-align: center;
 }
 
-  .score-text {
-    position: absolute;
-    width: 100%;
-    top: 10px;
-    left: 0;
-    text-transform: uppercase;
-    font-size: 13px;
-    line-height: 13px;
-    text-align: center;
-  }
+.score-text {
+  position: absolute;
+  width: 100%;
+  top: 10px;
+  left: 0;
+  text-transform: uppercase;
+  font-size: 13px;
+  line-height: 13px;
+  text-align: center;
+}
 
 p {
   margin-top: 0;
   margin-bottom: 10px;
-  line-height: 1.65; }
+  line-height: 1.65;
+}
 
 a {
   color: #776e65;
   font-weight: bold;
   text-decoration: underline;
-  cursor: pointer; }
+  cursor: pointer;
+}
 
 strong {
   text-transform: uppercase;
@@ -102,27 +104,29 @@ hr {
   .above-game:after {
     content: "";
     display: block;
-    clear: both; }
-
-  .intro {
-    float: left;
-    line-height: 42px;
-    margin-bottom: 0;
+    clear: both;
   }
 
-  .restart-btn {
-    display: inline-block;
-    background: #2D87A8;
-    border-radius: 3px;
-    padding: 0 20px;
-    text-decoration: none;
-    color: #f9f6f2;
-    height: 40px;
-    line-height: 42px;
-    cursor: pointer;
-    display: block;
-    text-align: center;
-    float: right; }
+.intro {
+  float: left;
+  line-height: 42px;
+  margin-bottom: 0;
+}
+
+.restart-btn {
+  display: inline-block;
+  background: #2D87A8;
+  border-radius: 3px;
+  padding: 0 20px;
+  text-decoration: none;
+  color: #f9f6f2;
+  height: 40px;
+  line-height: 42px;
+  cursor: pointer;
+  display: block;
+  text-align: center;
+  float: right;
+}
 
 .notice {
   position: relative;
@@ -136,11 +140,11 @@ hr {
   text-align: center;
 }
 
-  .notice:after {
-    content: "";
-    display: block;
-    clear: both;
-  }
+.notice:after {
+  content: "";
+  display: block;
+  clear: both;
+}
 
 .instructions {
   margin-top: 50px;
