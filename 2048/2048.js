@@ -1,16 +1,17 @@
 // 2048
-// Original game by https://gabrielecirulli.github.io/2048/
-// Inspired by Daniel Shiffman @shiffman
+// Original game by Gabriele Cirulli https://gabrielecirulli.github.io/2048/
+// Inspired by Daniel Shiffman (@shiffman)
 // Tutorial video https://www.youtube.com/watch?v=JSn-DJU8qf0
 // Dependencies: grid.js, cell.js, styles.js
 
-let grid, score = 0, bestscore = 0;
+let grid, score = 0,
+  bestscore = 0;
 
-const GSIZE = 480/4, // div width is 500px with 10px padding = 480px
-      X_DIM = 4,
-      Y_DIM = 4,
-      INIT_TILES = [2, 2],
-      GOAL_TILE = 2048;
+const GSIZE = 480 / 4, // div width is 500px with 10px padding = 480px
+  X_DIM = 4,
+  Y_DIM = 4,
+  INIT_TILES = [2, 2],
+  GOAL_TILE = 2048;
 
 function setup() {
 
@@ -60,7 +61,7 @@ function setScore(val) {
   // Update best score
   if (score && score > bestscore) {
     bestscore = score;
-    if (typeof(Storage) !== "undefined") localStorage.setItem("bestscore", bestscore);
+    if (typeof (Storage) !== "undefined") localStorage.setItem("bestscore", bestscore);
   }
 
   score_el.textContent = score;
@@ -70,7 +71,7 @@ function setScore(val) {
 
 // Attempts to retrieve bestscore from the local storage variable
 function getBestScore() {
-  bestscore = (typeof(Storage) !== "undefined") ?
+  bestscore = (typeof (Storage) !== "undefined") ?
     localStorage.getItem("bestscore") || 0 : 0;
   bestscore = Math.max(score, bestscore);
 }
@@ -91,12 +92,9 @@ function keyPressed() {
   }
 
   // Check if game is over
-  if (grid.gameOver) {
-    displayMessage("Game Over!");
-  }
-  else if (grid.win) {
-    displayMessage("You've won!");
-  }
+  if (grid.gameOver) displayMessage("Game Over!");
+  else if (grid.win) displayMessage("You've won!");
+
 }
 
 // Display game message on banner above the grid
@@ -105,8 +103,7 @@ function displayMessage(msg) {
   if (msg) {
     notice.children.item('p').innerHTML = `<strong>${msg}</strong>`;
     notice.style.display = 'block';
-  }
-  else {
+  } else {
     // hide game displayMessage
     notice.style.display = 'none';
   }
@@ -114,5 +111,5 @@ function displayMessage(msg) {
 
 // Prevent default scrolling behaviour of arrow keys
 window.addEventListener("keydown", e => {
-  if([37, 38, 39, 40].indexOf(e.keyCode) > -1) e.preventDefault()
+  if ([37, 38, 39, 40].indexOf(e.keyCode) > -1) e.preventDefault()
 }, false);

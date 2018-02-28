@@ -11,9 +11,13 @@ class Grid {
     this.ydim = ydim;
 
     // Populate the grid elements with new Cells
-    this.el = Array.from({length: ydim}, (row, j) => Array.from({length: xdim}, (cell, i) => {
+    this.el = Array.from({
+      length: ydim
+    }, (row, j) => Array.from({
+      length: xdim
+    }, (cell, i) => {
       // new Cell with incides (i, j)
-      return new Cell (i, j, this);
+      return new Cell(i, j, this);
     }));
 
   }
@@ -27,23 +31,23 @@ class Grid {
   add(w) {
     let options = this.el_list.filter(cell => cell.w == 0);
     if (options.length) {
-      random(options).w = w || (random(1) > 0.1 ? 2 : 4);
+      random(options).updateValue(w || (random(1) > 0.1 ? 2 : 4));
     }
   }
 
   // Completes one turn of play, given a direction (left, right, up, or down)
   operate(dir) {
-    
+
     // save the current state of the grid
     let save_state = this.el_list;
-    
+
     this.slide(dir);
     this.combine(dir);
     this.slide(dir);
-    
+
     // returns true if the game state has changed
     return !(this.el_list.every((cell, i) => cell.w == save_state[i].w));
-    
+
   }
 
   // Slides tiles in the given direction
@@ -85,16 +89,15 @@ class Grid {
         let n = cell.neighbours.filter(n =>
           n.j == j &&
           ((dir == 'left' || dir == 'up') && n.i > i ||
-          ((dir == 'right' || dir == 'down') && n.i < i))
+            ((dir == 'right' || dir == 'down') && n.i < i))
         ).filter(n => n.w != 0)[0];
 
         // If tile and neighbour have common values, combine and update score
         // hasMerged check fixes combine bug (eg. [0, 2, 2, 4] -> [0, 0, 0, 8])
         if (n && n.w == cell.w && !n.hasMerged) {
-          cell.w += n.w;
+          cell.updateValue(cell.w + n.w);
           cell.hasMerged = true;
-          n.w = 0;
-          n.moveToTarget();
+          n.updateValue(0);
           setScore(score + cell.w);
         }
 
@@ -117,7 +120,11 @@ class Grid {
   // Transposes the grid (rows <-> cols) and updates cell indices
   // This method is used by the Grid.slide and Grid.combine methods
   transpose() {
-    let el = Array.from({length: this.xdim}, (row, j) => Array.from({length: this.ydim}, (cell, i) => {
+    let el = Array.from({
+      length: this.xdim
+    }, (row, j) => Array.from({
+      length: this.ydim
+    }, (cell, i) => {
       return this.el[i][j];
     }));
     this.el = el;
@@ -130,11 +137,12 @@ class Grid {
     return !(
       this.el_list.filter(cell => cell.w == 0).length ||
       this.el_list
-        .map(cell => cell.neighbours.filter(n => n.w == cell.w))
-        .some(nn => nn.length)
+      .map(cell => cell.neighbours.filter(n => n.w == cell.w))
+      .some(nn => nn.length)
     );
   }
 
+  // Conversely, the game is won when the 2048 has been created
   get win() {
     return this.el_list.some(cell => cell.w == GOAL_TILE);
   }

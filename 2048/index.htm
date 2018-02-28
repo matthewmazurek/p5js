@@ -1,49 +1,50 @@
 <html>
-  <head>
-    <script src="../lib/p5.min.js"></script>
-    <script src="grid.js"></script>
-    <script src="cell.js"></script>
-    <script src="styles.js"></script>
-    <script src="2048.js"></script>
-    <link rel="stylesheet" href="main.css" />
-  </head>
-  <body>
-    <div class='container'>
-      <div class='header'>
-        <h1 class='title'>2048</h1>
-        <div class='scores'>
-          <div class='score-container'>
-            <p class='score-text'>Score</p>
-            <p id='score' class='score'>0</p>
-          </div>
-          <div class='best-container'>
-            <p class='score-text'>Best</p>
-            <p id='bestscore' class='score'>0</p>
-          </div>
+
+<head>
+  <script src="../lib/p5.min.js"></script>
+  <script src="grid.js"></script>
+  <script src="cell.js"></script>
+  <script src="styles.js"></script>
+  <script src="2048.js"></script>
+  <link rel="stylesheet" href="main.css" />
+  <title>2048 the Game - a p5js clone by @matthewmazurek</title>
+</head>
+
+<body>
+  <div class='container'>
+    <div class='header'>
+      <h1 class='title'>2048</h1>
+      <div class='scores'>
+        <div class='score-container'>
+          <p class='score-text'>Score</p>
+          <p id='score' class='score'>0</p>
+        </div>
+        <div class='best-container'>
+          <p class='score-text'>Best</p>
+          <p id='bestscore' class='score'>0</p>
         </div>
       </div>
-      <div class='above-game'>
-        <p class='intro'>Join the numbers and get to the <strong>2048 tile!</strong></p>
-        <a id='restart-btn' class='restart-btn'>New Game</a>
-      </div>
-      <div id='notice' class='notice'>
-        <p id='notice-message'></p>
-      </div>
-      <div id='p5js-canvas'></div>
-      <p class='instructions'>
-        <strong>Instructions: </strong>Use your arrow keys to move the tiles. Tiles of the same value combine into one! How high can you go?
-      </p>
-      <hr>
-      <p class='ref'>
-        This game has been created using the <a href='http://p5js.org'>p5js</a> programming library.
-        Inspiration for this project comes from Daniel Shiffman <a href='http://twitter.com/shiffman'>@shiffman</a> in his amazing <a href='https://www.youtube.com/watch?v=JSn-DJU8qf0'>tutorial videos</a>.
-        Concept based on the original game by <a href='http://gabrielecirulli.com/'>Gabriele Cirulli</a>.
-      </p>
-      <hr>
-      <p class='credits'>
-        Programming by <a href='http://twitter.com/matthewmazurek'>@matthewmazurek</a>.
-        More p5js projects available on my <a href='http://matthewmazurek.github.io/p5js'>github</a> repository.
-      </p>
     </div>
-  </body>
+    <div class='above-game'>
+      <p class='intro'>Join the numbers and get to the <strong>2048 tile!</strong></p>
+      <a id='restart-btn' class='restart-btn'>New Game</a>
+    </div>
+    <div id='notice' class='notice'>
+      <p id='notice-message'></p>
+    </div>
+    <div id='p5js-canvas'></div>
+    <p class='instructions'>
+      <strong>Instructions: </strong>Use your arrow keys to move the tiles. Tiles of the same value combine into one! How high can you go?
+    </p>
+    <hr>
+    <p class='ref'>
+      This game has been created using the <a href='http://p5js.org'>p5js</a> programming library. Inspiration for this project comes from Daniel Shiffman <a href='http://twitter.com/shiffman'>@shiffman</a> in his amazing <a href='https://www.youtube.com/watch?v=JSn-DJU8qf0'>tutorial videos</a>. Concept based on the original game by <a href='http://gabrielecirulli.com/'>Gabriele Cirulli</a>.
+    </p>
+    <hr>
+    <p class='credits'>
+      Programming by <a href='http://twitter.com/matthewmazurek'>@matthewmazurek</a>. More p5js projects available on my <a href='http://matthewmazurek.github.io/p5js'>github</a> repository.
+    </p>
+  </div>
+</body>
+
 </html>

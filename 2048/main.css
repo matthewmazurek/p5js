@@ -1,4 +1,5 @@
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   background: #FFF7EB;
@@ -36,7 +37,8 @@ h1.title {
   text-align: right;
 }
 
-.score-container, .best-container {
+.score-container,
+.best-container {
   position: relative;
   display: inline-block;
   background: #C9B8A1;
@@ -101,11 +103,11 @@ hr {
   margin: 25px 0;
 }
 
-  .above-game:after {
-    content: "";
-    display: block;
-    clear: both;
-  }
+.above-game:after {
+  content: "";
+  display: block;
+  clear: both;
+}
 
 .intro {
   float: left;
