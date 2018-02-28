@@ -84,10 +84,10 @@ function keyPressed() {
   if (keyCode === UP_ARROW) dir = 'up';
   if (keyCode === DOWN_ARROW) dir = 'down';
 
-  // On arrow-key press, perform one turn of play and add a new tile
+  // On arrow-key press, perform one turn of play and add a new tile if game state has changed
   if (dir) {
-    grid.operate(dir);
-    grid.add();
+    let game_state_changed = grid.operate(dir);
+    if (game_state_changed) grid.add();
   }
 
   // Check if game is over

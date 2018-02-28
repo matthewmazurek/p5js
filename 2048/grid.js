@@ -33,9 +33,17 @@ class Grid {
 
   // Completes one turn of play, given a direction (left, right, up, or down)
   operate(dir) {
+    
+    // save the current state of the grid
+    let save_state = this.el_list;
+    
     this.slide(dir);
     this.combine(dir);
     this.slide(dir);
+    
+    // returns true if the game state has changed
+    return !(this.el_list.every((cell, i) => cell.w == save_state[i].w));
+    
   }
 
   // Slides tiles in the given direction
