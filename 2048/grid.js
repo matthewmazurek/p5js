@@ -38,8 +38,8 @@ class Grid {
   // Completes one turn of play, given a direction (left, right, up, or down)
   operate(dir) {
 
-    // save the current state of the grid
-    let save_state = this.el_list;
+    // save the current state of the grid as a deep copy
+    let save_state = this.el_list.map(cell => new Cell(cell.i, cell.j, cell.grid, cell.w));
 
     this.slide(dir);
     this.combine(dir);
