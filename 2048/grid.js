@@ -35,6 +35,13 @@ class Grid {
     }
   }
 
+  // Set the game state from a 2D value array (for debugging purposes only)
+  setGridFromArray(arr) {
+    arr.forEach((row, j) => row.forEach((val, i) => {
+      this.el[j][i].updateValue(val);
+    }));
+  }
+
   // Completes one turn of play, given a direction (left, right, up, or down)
   operate(dir) {
 
