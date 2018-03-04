@@ -4,6 +4,7 @@
 - [A* path-finding](astar) - Path-finding experiment implementing the A* algorithm
 - [Attractors](attractor) - Visualizing particles with attraction and repulsion
 - [Binary tree](bintree) - A simple implementation of a binary tree search algorithm
+- [Connect4](connect4) - A basic clone of the original game
 - [Flowfield](flowfield) - Visualizing particles in a force field
 - [Gaussian distrubution](gaussian) - Visualizing random numbers generated from a Gaussian distribution
 - [Inverse kinematics](inverse-kinematics) - Point-seeking behaviour with a segmented body
