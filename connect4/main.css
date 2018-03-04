@@ -1,0 +1,147 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: #C12257;
+  color: #F5E4E9;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-size: 18px;
+}
+
+body {
+  margin: 80px 0;
+}
+
+.container {
+  width: 500px;
+  margin: 0 auto;
+}
+
+.header:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+h1.title {
+  font-size: 80px;
+  font-weight: bold;
+  margin: 0;
+  color: #FFEFF4;
+  line-height: 80px;
+  display: block;
+  float: left;
+}
+
+.turn-container {
+  float: right;
+  position: relative;
+  display: inline-block;
+  background: #12EAEA;
+  padding: 15px 0;
+  font-size: 25px;
+  height: 25px;
+  line-height: 47px;
+  font-weight: bold;
+  border-radius: 6px;
+  color: white;
+  margin-top: 8px;
+  text-align: center;
+}
+
+.turn-text {
+  position: relative;
+  width: 65px;
+  color: #4E071F;
+  text-transform: uppercase;
+  font-size: 13px;
+  line-height: 13px;
+  text-align: center;
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: 10px;
+  line-height: 1.65;
+}
+
+a {
+  color: #FFBFD4;
+  font-weight: bold;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+strong {
+  text-transform: uppercase;
+}
+
+hr {
+  border: none;
+  border-bottom: 1px solid #C9B8A1;
+  margin-top: 20px;
+  margin-bottom: 30px;
+}
+
+#p5js-canvas {
+  margin-top: 40px;
+  position: relative;
+  padding: 10px;
+  cursor: default;
+  background: #9B1C46;
+  border-radius: 6px;
+  width: 480px;
+}
+
+.above-game {
+  margin: 25px 0;
+}
+
+.above-game:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.intro {
+  float: left;
+  line-height: 42px;
+  margin-bottom: 0;
+}
+
+.restart-btn {
+  display: inline-block;
+  background: #E82A69;
+  border-radius: 6px;
+  padding: 0 20px;
+  text-decoration: none;
+  color: #FFEFF4;
+  height: 40px;
+  line-height: 42px;
+  cursor: pointer;
+  display: block;
+  text-align: center;
+  float: right;
+}
+
+.notice {
+  position: relative;
+  background: #D6C9CD;
+  color: #4E071F;
+  padding: 16px;
+  margin-top: 30px;
+  height: 56px;
+  box-sizing: border-box;
+  border-radius: 6px;
+  text-align: center;
+}
+
+.notice:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.instructions {
+  margin-top: 50px;
+}

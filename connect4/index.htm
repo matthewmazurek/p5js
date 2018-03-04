@@ -1,0 +1,44 @@
+<html>
+
+<head>
+  <script src="../lib/p5.min.js"></script>
+  <script src="connect4.js"></script>
+  <script src="grid.js"></script>
+  <script src="cell.js"></script>
+  <link rel="stylesheet" href="main.css" />
+  <title>Connect 4 the Game - a p5js clone by @matthewmazurek</title>
+</head>
+
+<body>
+  <div class='container'>
+    <div class='header'>
+      <h1 class='title'>Connect4</h1>
+
+        <div class='turn-container' id='turn-container'>
+          <p class='turn-text' id='turn-text'>Player Turn</p>
+        </div>
+
+    </div>
+    <div class='above-game'>
+      <p class='intro'>Take turns and be the first to <strong>Connect4!</strong></p>
+      <a id='restart-btn' class='restart-btn'>New Game</a>
+    </div>
+    <div id='notice' class='notice'>
+      <p id='notice-message'></p>
+    </div>
+    <div id='p5js-canvas'></div>
+    <p class='instructions'>
+      <strong>Instructions: </strong>Take turns with a friend using the mouse to drop disks into the rack. Connect 4 in any direction to win!
+    </p>
+    <hr>
+    <p class='ref'>
+      This game has been created using the <a href='http://p5js.org'>p5js</a> programming library. Inspiration for this project comes from Daniel Shiffman <a href='http://twitter.com/shiffman'>@shiffman</a> in his amazing <a href='https://www.youtube.com/channel/UCvjgXvBlbQiydffZU7m1_aw'>tutorial videos</a>. Concept based on the well known <a href='https://en.wikipedia.org/wiki/Connect_Four'>original</a>.
+    </p>
+    <hr>
+    <p class='credits'>
+      Programming by <a href='http://twitter.com/matthewmazurek'>@matthewmazurek</a>. More p5js projects available on my <a href='http://matthewmazurek.github.io/p5js'>github</a> repository.
+    </p>
+  </div>
+</body>
+
+</html>
