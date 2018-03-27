@@ -12,7 +12,7 @@ function setup() {
   createCanvas(800, 800);
 
   // Array of points
-  points = Array.from({length: 3}, () => {
+  points = Array.from({length: 500}, () => {
     let x = randomGaussian(width / 2, width / 8);
     let y = randomGaussian(height / 2, height / 8);
     return new Point(x, y);
