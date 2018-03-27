@@ -10,7 +10,7 @@ const NUM_ATTRACTORS = 5,
 
 function setup() {
 
-  createCanvas(400, 400);
+  createCanvas(600, 600);
 
   // Instantiate quadtree and set mapping of (x, y) properties
   qtree = new QuadTree();
