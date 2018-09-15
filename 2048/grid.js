@@ -102,8 +102,7 @@ class Grid {
         // If tile and neighbour have common values, combine and update score
         // hasMerged check fixes combine bug (eg. [0, 2, 2, 4] -> [0, 0, 0, 8])
         if (n && n.w == cell.w && !n.hasMerged) {
-          cell.updateValue(cell.w + n.w);
-          cell.hasMerged = true;
+          cell.merge(n);
           n.updateValue(0);
           setScore(score + cell.w);
         }

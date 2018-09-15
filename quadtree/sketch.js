@@ -36,12 +36,13 @@ function draw() {
 
   // Draw quadtree structure
   qtree.draw();
+  qtree.drawActive();
 
-  // Draw look-up range
-  stroke(0, 255, 0);
-  rectMode(CENTER);
   let range = new Rectangle(mouseX, mouseY, 25, 25);
-  rect(range.x, range.y, range.w * 2, range.h * 2);
+  // let range = new Circle(mouseX, mouseY, 10);
+  
+  // Draw look-up range
+  range.draw()
 
   // Highlight point in look-up range
   // Using QuadTree.query to minimize search space

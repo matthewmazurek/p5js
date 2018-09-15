@@ -16,7 +16,7 @@ const f = x => target.a * x + target.b;
 function setup() {
   
   // new perceptron
-  ptron = new Perceptron(3, 0.02);
+  ptron = new Perceptron(3, 0.01);
   
   // new target
   target = {a: random(1), b: random(1)};
@@ -80,6 +80,7 @@ class Perceptron {
   constructor (n, c) {
     this.weights = Array.from({length: n}, () => random(-1, 1));
     this.c = c;
+    this.decay = 0.999;
   }
   
   // equation of linear separator (net output = 0)
@@ -97,7 +98,8 @@ class Perceptron {
   
   // hard-limiting, bipolar linear threshold
   threshold (n) {
-    return n >= 0 ? 1 : -1;
+    // return n >= 0 ? 1 : -1;
+    return n;
   }
   
   // training and backprop
@@ -107,6 +109,7 @@ class Perceptron {
         error = desired - fprop; // either -2, 0, or 2
     for (let w in this.weights)
       this.weights[w] += this.c * error * trainingPoint.input[w];
+    this.c *= this.decay;
   }
   
 }

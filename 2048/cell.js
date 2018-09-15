@@ -12,6 +12,7 @@ class Cell {
     this.j = j;
     this.grid = grid;
     this.hasMerged = false;
+    this.size = 1;
     this.updateValue(w);
   }
   
@@ -50,11 +51,23 @@ class Cell {
     return res.filter(e => e);
   }
 
+  merge(n) {
+    this.updateValue(this.w + n.w);
+    this.hasMerged = true;
+    this.size = 2;
+    this.background = color('#fff');
+  }
+
   // Tile positions are animated using linear interpolation every draw cycle
   updatePos() {
     let speed = 0.25;
     this.x = round(lerp(this.x, this.i * GSIZE, speed));
     this.y = round(lerp(this.y, this.j * GSIZE, speed));
+  }
+
+  updateSize() {
+    let speed = 0.25;
+    this.size = lerp(this.size, 1, speed);
   }
 
   // Likewise, the colors are animated to allow the 'burst' effect for new tiles
@@ -71,6 +84,7 @@ class Cell {
   moveToTarget() {
     this.x = this.i * GSIZE;
     this.y = this.j * GSIZE;
+    this.size = 1;
     this.background = color(TILE_STYLES.init_color);
   }
   
@@ -81,6 +95,7 @@ class Cell {
     
     // Animate position and color
     this.updatePos();
+    this.updateSize();
     this.updateColor();
     
     // Tiles are drawn according to the styles.js style sheet
@@ -88,7 +103,8 @@ class Cell {
     translate((width - (GSIZE * X_DIM)) / 2, (height - (GSIZE * Y_DIM)) / 2);
     noStroke();
     fill(this.background);
-    rect(this.x, this.y, GSIZE, GSIZE, GSIZE / 10);
+    rectMode(CENTER);
+    rect(this.x + GSIZE / 2, this.y + GSIZE / 2, this.size * GSIZE, this.size * GSIZE, GSIZE / 10);
     if (this.w != 0) {
       textAlign(CENTER, CENTER);
       textSize(TILE_STYLES[this.style_code].size)
