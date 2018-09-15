@@ -3,7 +3,7 @@ function setup() {
   
   createCanvas(480, 640);
 
-  speed = createSlider(1, 100, 1);
+  speed = createSlider(1, 10, 1);
   speed.style('width', `${width - 50}`); 
   speed.position((width - speed.width) / 2, height - 25);
 
