@@ -1,10 +1,10 @@
 let fb, birds = [], N, history = [], gen = 0, speed, player, myData, display_nn = true, stats = {};
 function setup() {
-  
+
   createCanvas(480, 640);
 
   speed = createSlider(1, 10, 1);
-  speed.style('width', `${width - 50}`); 
+  speed.style('width', `${width - 50}`);
   speed.position((width - speed.width) / 2, height - 25);
 
   N = 250; // population size
@@ -16,8 +16,13 @@ function setup() {
 
 function trainTo(g) {
   console.log(`Training to generation ${g}...`);
+  let i = gen;
   while (gen < g) {
     fb.update(false);
+    if (i !== gen) {
+      i = gen;
+      if (i % 5 === 0 || i == g) console.log(`... ${i} / ${g}`);
+    }
   }
   console.log('Training copmlete.');
 }
@@ -26,7 +31,7 @@ function draw() {
   for (let i = 0; i < speed.value(); i++) {
     background(0);
     fb.update();
-  }  
+  }
 }
 
 function keyPressed() {
@@ -134,7 +139,7 @@ class FlappyBird {
       // reset
       this.init();
     }
- 
+
     if (updateCanvas) this.showStats();
 
   }
@@ -165,12 +170,12 @@ class FlappyBird {
       text('x_1:', 20, height / 2 + 120);
       text('x_2:', 20, height / 2 + 140);
       text('x_3:', 20, height / 2 + 160);
-      
+
       text('NN Output', 20, height / 2 + 190);
       text('y_0:', 20, height / 2 + 210);
-      
+
       let meter_max = 120;
-      
+
       fill(21);
       noStroke();
       rect(55, height / 2 + 100 - 6, meter_max, 5);
@@ -178,7 +183,7 @@ class FlappyBird {
       rect(55, height / 2 + 140 - 6, meter_max, 5);
       rect(55, height / 2 + 160 - 6, meter_max, 5);
       rect(55, height / 2 + 210 - 6, meter_max, 5);
-      
+
       fill(255, 200);
       if (stats.nn_id)
         text(stats.nn_id, 20, height / 2 + 50);
@@ -192,7 +197,7 @@ class FlappyBird {
       }
       if (stats.nn_output)
         if (stats.nn_output > 0.5) fill(0, 255, 0, 200);
-        rect(55, height / 2 + 210 - 6, meter_max * stats.nn_output, 5);
+      rect(55, height / 2 + 210 - 6, meter_max * stats.nn_output, 5);
 
     }
   }
@@ -221,7 +226,7 @@ class Flappy {
     return (parentName
       ? parentName.substring(0, 3)
       : 'AAA'.split('').map(l => String.fromCharCode(Math.random() * 26 + 65)).join(''))
-    + '00'.split('').map(n => String.fromCharCode(Math.random() * 10 + 48)).join('');
+      + '00'.split('').map(n => String.fromCharCode(Math.random() * 10 + 48)).join('');
   }
   lineage() {
     console.log(this);
@@ -340,13 +345,13 @@ class Pipe {
   }
 }
 
-Math.randn = function(mean = 0, stdev = 1) {
-	let x1, x2, rad, y1;
-	do {
-		x1 = 2 * this.random() - 1;
-		x2 = 2 * this.random() - 1;
-		rad = x1 * x1 + x2 * x2;
-	} while(rad >= 1 || rad == 0);
-	let c = this.sqrt(-2 * this.log(rad) / rad);
-	return (x1 * c) * stdev + mean;
+Math.randn = function (mean = 0, stdev = 1) {
+  let x1, x2, rad, y1;
+  do {
+    x1 = 2 * this.random() - 1;
+    x2 = 2 * this.random() - 1;
+    rad = x1 * x1 + x2 * x2;
+  } while (rad >= 1 || rad == 0);
+  let c = this.sqrt(-2 * this.log(rad) / rad);
+  return (x1 * c) * stdev + mean;
 };

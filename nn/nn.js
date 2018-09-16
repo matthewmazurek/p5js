@@ -27,6 +27,13 @@ class NeuralNetwork {
         const cost = - logProbs.sum() / m;
         return cost;
     }
+    accuracy(A2, Y) {
+        const m = A2.cols;
+        const sum = A2.round().reduce((acc, val, idx) => {
+            return acc + (val == Y.lookup(idx))
+        }, 0, 0).data[0];
+        return sum / m;
+    }
     backProp(cache, X, Y) {
 
         const m = X.cols;
@@ -62,18 +69,19 @@ class NeuralNetwork {
 
     }
     async train(X, Y, learningRate = 0.1, iterations = 1000, printCost = true) {
-        let costHistory = [];
+        const history = [];
         for (let i = 0; i < iterations; i++) {
             const [A2, cache] = this.forwardProp(X);
-            const cost = this.cost(A2, Y);
             if (i % 100 == 0 || i == iterations - 1) {
-                costHistory.push(cost);
-                if (printCost) console.log(`Cost after ${i} iterations: ${cost}`);
+                const cost = this.cost(A2, Y);
+                const accuracy = this.accuracy(A2, Y);
+                history.push({ cost, accuracy });
+                if (printCost) console.log(`Iteration ${i}: Cost = ${cost}, Accuracy = ${accuracy}`);
             }
             const grads = this.backProp(cache, X, Y);
             this.updateParams(grads, learningRate);
         }
-        return costHistory;
+        return history;
     }
     predict(X) {
         const [A2, cache] = this.forwardProp(X);
