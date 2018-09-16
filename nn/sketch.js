@@ -16,18 +16,19 @@ function setup() {
     createP(`Click and hold to reveal correctly (green colored) classified data point.`)
     
     createButton('Load samaple data').mousePressed(loadData);
-    createButton('Reset').mousePressed(() => {
-        data = [];
-        nn = new NeuralNetwork([2, 8, 1]);
-    });
+    createButton('Reset').mousePressed(reset);
 
     p = createP('');
 
 }
 
 function loadData() {
-    data = [];
+    reset();
     while (data.length < 100) data.push(new DataPoint);
+}
+function reset() {
+    data = [];
+    nn = new NeuralNetwork([2, 8, 1]);
 }
 
 function keyPressed() {
