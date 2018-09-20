@@ -3,10 +3,12 @@ let data = [];
 let X, Y;
 let keyLabel;
 
+const nnDims = [2, 8, 4, 4, 1];
+
 function setup() {
     createP().html('<h1>Simple multi-layered neural network classifier</h1>');
     createCanvas(400, 400);
-    nn = new NeuralNetwork([2, 8, 1]);
+    nn = new NeuralNetwork(nnDims);
 
     X = new Matrix2D(data.map(dp => dp.x)).T;
     Y = new Matrix2D(data.map(dp => [dp.y])).T;
@@ -14,7 +16,7 @@ function setup() {
     createP(`Click and drag to add data points while holding either 'Z' or 'X'.`)
     createP(`The network will try to find a general solution to correctly classify the data.`)
     createP(`Click and hold to reveal correctly (green colored) classified data point.`)
-    
+
     createButton('Load samaple data').mousePressed(loadData);
     createButton('Reset').mousePressed(reset);
 
@@ -28,7 +30,7 @@ function loadData() {
 }
 function reset() {
     data = [];
-    nn = new NeuralNetwork([2, 8, 1]);
+    nn = new NeuralNetwork(nnDims);
 }
 
 function keyPressed() {
@@ -57,7 +59,7 @@ function draw() {
         X = new Matrix2D(data.map(dp => dp.x)).T;
         Y = new Matrix2D(data.map(dp => [dp.y])).T;
         train(X, Y);
-    }    
+    }
 
     background(0);
     noStroke();

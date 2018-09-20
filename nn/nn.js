@@ -1,130 +1,175 @@
 class NeuralNetwork {
-    // Model: input layer -> hidden layer -> output layer
+    // Model: X -> [linear -> ReLU] x [L-1] -> [linear -> sigmoid] -> AL
     constructor(dims) {
-        if (dims !== undefined) this.initializeParams(dims);
+        this.dims = dims;
+        this.L = dims.length - 1;
+        this.params = this.initializeParams(dims);
     }
     initializeParams(dims) {
-        const [n_x, n_h, n_y] = dims;
-        this.W1 = Matrix2D.random([n_h, n_x]);
-        this.b1 = Matrix2D.zeros([n_h, 1]);
-        this.W2 = Matrix2D.random([n_y, n_h]);
-        this.b2 = Matrix2D.zeros([n_y, 1]);
+        const params = {};
+        for (let i = 1; i <= this.L; i++) {
+            params['W' + i] = Matrix2D.random([dims[i], dims[i - 1]]);
+            params['b' + i] = Matrix2D.random([dims[i], 1]);
+        }
+        return params;
     }
-    forwardProp(X) {
-        const Z1 = this.W1.dot(X).add(this.b1); // [n_h, n_x] x [n_x, m] = [n_h, m]
-        const A1 = Z1.map(tanh.fn); // [n_h, m]
-        const Z2 = this.W2.dot(A1).add(this.b2) // [n_y, n_h] x [n_h, m] = [n_y, m]
-        const A2 = Z2.map(sigmoid.fn); // [n_y, m]
-        const cache = { Z1, A1, Z2, A2 };
-        return [A2, cache];
+    linearForward(A, W, b) {
+        const Z = W.dot(A).add(b);
+        const cache = { A, W, b };
+        return [Z, cache];
     }
-    cost(A2, Y) {
-        const m = A2.cols; // number of examples
+    linearActivationForward(A_prev, W, b, activation) {
+        const [Z, linear_cache] = this.linearForward(A_prev, W, b);
+        const [A, activation_cache] = activation.fn(Z);
+        const cache = { linear_cache, activation_cache };
+        return [A, cache];
+    }
+    modelForward(X) {
+        let A = X, cache, caches = [];
+        // hidden layers [linear -> relu] x (L - 1)
+        for (let i = 1; i < this.L; i++) {
+            const A_prev = A;
+            [A, cache] = this.linearActivationForward(
+                A_prev, this.params['W' + i], this.params['b' + i], tanh
+            );
+            caches.push(cache);
+        }
+        // final layer [linear -> sigmoid]
+        [A, cache] = this.linearActivationForward(
+            A, this.params['W' + this.L], this.params['b' + this.L], sigmoid
+        );
+        caches.push(cache);
+        return [A, caches];
+    }
+    linearBackward(dZ, cache) {
+        const { A, W, b } = cache;
+        const m = A.cols;
+        const dW = dZ.dot(A.T).div(m);
+        const db = dZ.sum(0).div(m);
+        const dA_prev = W.T.dot(dZ);
+        return [dA_prev, dW, db];
+    }
+    linearActivationBackward(dA, cache, activation) {
+        const { linear_cache, activation_cache } = cache;
+        const dZ = activation.dfn(dA, activation_cache);
+        const [dA_prev, dW, db] = this.linearBackward(dZ, linear_cache);
+        return [dA_prev, dW, db];
+    }
+    modelBackward(AL, Y, caches) {
+        const grads = {};
+        const m = AL.cols;
+        // dAL is derrivative of cost fxn wrt AL (using cross-entropy loss)
+        // dAL = - (Y/AL - (1-Y)/(1-AL))
+        const dAL = Y.div(AL).sub(
+            Y.mult(-1).add(1).div(
+                AL.mult(-1).add(1)
+            )
+        ).mult(-1);
+        // Lth layer (sigmoid -> linear)
+        let current_cache = caches[this.L - 1];
+        [grads['dA' + this.L], grads['dW' + this.L], grads['db' + this.L]] =
+            this.linearActivationBackward(dAL, current_cache, sigmoid);
+        //ith layer (ReLU -> linear)
+        for (let i = this.L - 1; i > 0; i--) {
+            current_cache = caches[i - 1];
+            [grads['dA' + i], grads['dW' + i], grads['db' + i]] =
+                this.linearActivationBackward(
+                    grads['dA' + (i + 1)], current_cache, tanh
+                );
+        }
+        return grads;
+    }
+    cost(AL, Y) {
+        const m = AL.cols;
         // cross-entropy cost
-        const logProbs = A2.log().mult(Y).add(
-            (Y.mult(-1).add(1)).mult((A2.mult(-1).add(1)).log())
-        ) // [n_y, m]
+        // = - sum ( Y*ln(AL) + (1-Y)*ln(1-AL) ) / m
+        const logProbs = Y.mult(AL.log()).add(
+            Y.mult(-1).add(1).mult(
+                AL.mult(-1).add(1).log()
+            )
+        )
         const cost = - logProbs.sum() / m;
         return cost;
     }
-    accuracy(A2, Y) {
-        const m = A2.cols;
-        const sum = A2.round().reduce((acc, val, idx) => {
+    accuracy(A, Y) {
+        const m = A.cols;
+        const sum = A.round().reduce((acc, val, idx) => {
             return acc + (val == Y.lookup(idx))
         }, 0, 0).data[0];
         return sum / m;
     }
-    backProp(cache, X, Y) {
-
-        const m = X.cols;
-        const { A1, A2 } = cache
-
-        // dZ2 is derrived from the chain rule, using the sigmoid activation function
-        // and the cross-entropy loss calculation
-        const dZ2 = A2.sub(Y); // [n_y, m]
-        const dW2 = dZ2.dot(A1.T).mult(1 / m); // [n_y, m] x [m, n_h] = [n_y, n_h]
-        const db2 = dZ2.sum(0).mult(1 / m); // [n_y, 1]
-        const dZ1 = this.W2.T.dot(dZ2).mult(A1.pow(2).mult(-1).add(1)); // ( [n_h, n_y] x [n_y, m] ) * [n_h, m] = [n_h, m]
-        const dW1 = dZ1.dot(X.T).mult(1 / m); // [n_h, m] x [m, n_x] = [n_h, n_x]
-        const db1 = dZ1.sum(0).mult(1 / m); // [n_h, 1]
-
-        const grads = { dW1, db1, dW2, db2 };
-
-        return grads;
-
-    }
     updateParams(grads, learningRate) {
-        const { dW1, db1, dW2, db2 } = grads;
-        this.W1 = this.W1.sub(dW1.mult(learningRate));
-        this.b1 = this.b1.sub(db1.mult(learningRate));
-        this.W2 = this.W2.sub(dW2.mult(learningRate));
-        this.b2 = this.b2.sub(db2.mult(learningRate));
-    }
-
-    backpropCheck(X, Y) {
-        const deltaX = X.add(0.0001);
-        const [A2, cache] = this.forwardProp(X);
-        const cost = this.cost(A2, Y);
-        const grads = this.backProp(cache, X, Y);
-
+        const L = this.dims.length - 1;
+        for (let i = 1; i <= L; i++) {
+            this.params['W' + i] = this.params['W' + i].sub(grads['dW' + i].mult(learningRate));
+            this.params['b' + i] = this.params['b' + i].sub(grads['db' + i].mult(learningRate));
+        }
     }
     async train(X, Y, learningRate = 0.1, iterations = 1000, printCost = true) {
         const history = [];
         for (let i = 0; i < iterations; i++) {
-            const [A2, cache] = this.forwardProp(X);
+            const [AL, caches] = this.modelForward(X);
             if (i % 100 == 0 || i == iterations - 1) {
-                const cost = this.cost(A2, Y);
-                const accuracy = this.accuracy(A2, Y);
+                const cost = this.cost(AL, Y);
+                const accuracy = this.accuracy(AL, Y);
                 history.push({ cost, accuracy });
                 if (printCost) console.log(`Iteration ${i}: Cost = ${cost}, Accuracy = ${accuracy}`);
             }
-            const grads = this.backProp(cache, X, Y);
+            const grads = this.modelBackward(AL, Y, caches);
             this.updateParams(grads, learningRate);
         }
         return history;
     }
     predict(X) {
-        const [A2, cache] = this.forwardProp(X);
-        return A2;
-    }
-    mutate(fn) {
-        this.W1 = this.W1.map(fn);
-        this.b1 = this.b1.map(fn);
-        this.W2 = this.W2.map(fn);
-        this.b2 = this.b2.map(fn);
-        return this;
-    }
-    static from(nn) {
-        let res = new NeuralNetwork();
-        // New NN, a copy of the one passed
-        if (nn instanceof NeuralNetwork) {
-            res.W1 = nn.W1.copy();
-            res.b1 = nn.b1.copy();
-            res.W2 = nn.W2.copy();
-            res.b2 = nn.b2.copy();
-        }
-        // New NN from JSON objectx
-        else {
-            res.W1 = new Matrix2D(nn.W1.data);
-            res.b1 = new Matrix2D(nn.b1.data);
-            res.W2 = new Matrix2D(nn.W2.data);
-            res.b2 = new Matrix2D(nn.b2.data);
-        }
-        return res;
+        const [AL, cache] = this.modelForward(X);
+        return AL;
     }
 }
 
 class ActivationFunction {
-    constructor(fn, dfn) {
+    constructor(name, fn, dfn) {
+        this.name = name;
         this.fn = fn;
         this.dfn = dfn;
     }
 }
+const relu = new ActivationFunction(
+    'relu',
+    Z => {
+        const A = Z.map(x => Math.max(0, x));
+        const cache = { Z }
+        return [A, cache];
+    },
+    (dA, cache) => {
+        const { Z } = cache;
+        const dZ = dA.mult(Z.map(x => x > 0 ? 1 : 0));
+        return dZ;
+    }
+);
 const sigmoid = new ActivationFunction(
-    x => 1 / (1 + Math.exp(-x)),
-    y => y * (1 - y)
+    'sigmoid',
+    Z => {
+        const A = Z.mult(-1).exp().add(1).pow(-1);
+        const cache = { A }
+        return [A, cache];
+    },
+    (dA, cache) => {
+        const { A } = cache;
+        const dZ = dA.mult(A.mult(A.mult(-1).add(1)));
+
+        return dZ;
+    }
 );
 const tanh = new ActivationFunction(
-    x => Math.tanh(x),
-    y => 1 - (y * y)
+    'tanh',
+    Z => {
+        const A = Z.map(x => Math.tanh(x));
+        const cache = { A };
+        return [A, cache];
+    },
+    (dA, cache) => {
+        const { A } = cache;
+        const dZ = dA.mult(A.mult(A).mult(-1).add(1));
+        return dZ;
+    }
 );
