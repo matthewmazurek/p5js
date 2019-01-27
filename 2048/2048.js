@@ -4,14 +4,14 @@
 // Tutorial video https://www.youtube.com/watch?v=JSn-DJU8qf0
 // Dependencies: grid.js, cell.js, styles.js
 
-let grid, score = 0,
-  bestscore = 0;
+let grid, score = 0, bestscore = 0, t;
 
 const GSIZE = 480 / 4, // div width is 500px with 10px padding = 480px
   X_DIM = 4,
   Y_DIM = 4,
   INIT_TILES = [2, 2],
-  GOAL_TILE = 2048;
+  GOAL_TILE = 2048,
+  TIME_ALIVE = 20;
 
 function setup() {
 
@@ -34,6 +34,9 @@ function draw() {
   background(GRID_STYLES.background);
   grid.draw();
 
+  t--;
+  if (t <= 0) noLoop();
+
 }
 
 function init() {
@@ -48,6 +51,10 @@ function init() {
   // Start a new X_DIM x Y_DIM game with INIT_TILES
   grid = new Grid(X_DIM, Y_DIM);
   INIT_TILES.forEach(tile_value => grid.add(tile_value));
+
+  // Reset alive counter
+  t = TIME_ALIVE;
+  loop();
 
 }
 
@@ -94,6 +101,10 @@ function keyPressed() {
   // Check if game is over
   if (grid.gameOver) displayMessage("Game Over!");
   else if (grid.win) displayMessage("You've won!");
+
+  // Reset alive counter
+  t = TIME_ALIVE;
+  loop();
 
 }
 

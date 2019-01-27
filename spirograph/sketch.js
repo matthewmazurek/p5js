@@ -5,7 +5,7 @@ function setup() {
     k = 6;
     l = 1;
     res = 10;
-    n = 10;
+    n = 5;
     for (let i = 0; i < n; i++) {
         new Circle(100 * (Math.E * k) ** -(2 * i / k));
     }
